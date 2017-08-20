@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import net.tonbot.common.Activity;
 import net.tonbot.common.ActivityDescriptor;
 import net.tonbot.common.BotUtils;
+import net.tonbot.common.TonbotBusinessException;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.util.EmbedBuilder;
 
@@ -20,10 +21,12 @@ public class TimeActivity implements Activity {
 			.description("Anything about time. Conversions, current time, etc.")
 			.build();
 
+	private final BotUtils botUtils;
 	private final WolframAlphaClient waClient;
 
 	@Inject
-	public TimeActivity(WolframAlphaClient waClient) {
+	public TimeActivity(BotUtils botUtils, WolframAlphaClient waClient) {
+		this.botUtils = Preconditions.checkNotNull(botUtils, "botUtils must be non-null.");
 		this.waClient = Preconditions.checkNotNull(waClient, "waClient must be non-null.");
 	}
 
@@ -40,8 +43,7 @@ public class TimeActivity implements Activity {
 		QueryResult queryResult = response.getQueryResult();
 
 		if (!queryResult.isSuccess()) {
-			BotUtils.sendMessage(event.getChannel(), "I don't know what that means. :worried:");
-			return;
+			throw new TonbotBusinessException("I don't know what that means. :worried:");
 		}
 
 		Pod resultPod = queryResult.getPods().stream()
@@ -57,8 +59,7 @@ public class TimeActivity implements Activity {
 
 		// Use the presence of a clock image to determine if query was time-related.
 		if (clockImagesPod == null) {
-			BotUtils.sendMessage(event.getChannel(), "I don't think that was related to time. :thinking:");
-			return;
+			throw new TonbotBusinessException("I don't think that was related to time. :thinking:");
 		}
 
 		EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -73,6 +74,6 @@ public class TimeActivity implements Activity {
 
 		embedBuilder.withFooterText("Powered by WolframAlpha");
 
-		BotUtils.sendEmbeddedContent(event.getChannel(), embedBuilder.build());
+		botUtils.sendEmbed(event.getChannel(), embedBuilder.build());
 	}
 }

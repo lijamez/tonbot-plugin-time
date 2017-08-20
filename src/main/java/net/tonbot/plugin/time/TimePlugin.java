@@ -29,7 +29,7 @@ public class TimePlugin extends TonbotPlugin {
 
 		try {
 			Config config = objectMapper.readValue(configFile, Config.class);
-			this.injector = Guice.createInjector(new TimeModule(args.getPrefix(), config.getWolframAlphaAppId()));
+			this.injector = Guice.createInjector(new TimeModule(args.getPrefix(), args.getBotUtils(), config.getWolframAlphaAppId()));
 		} catch (IOException e) {
 			throw new RuntimeException("Could not read configuration file.", e);
 		}

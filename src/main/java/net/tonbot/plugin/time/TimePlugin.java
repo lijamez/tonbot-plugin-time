@@ -24,7 +24,12 @@ public class TimePlugin extends TonbotPlugin {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		File configFile = args.getConfigFile().orElse(null);
+		File configFile = args.getConfigFile();
+		if (!configFile.exists()) {
+			//TODO: Create it.
+			throw new IllegalStateException("Config file doesn't exist.");
+		}
+		
 		Preconditions.checkNotNull(configFile, "configFile must be non-null.");
 
 		try {

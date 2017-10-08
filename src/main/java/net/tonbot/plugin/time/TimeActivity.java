@@ -16,7 +16,7 @@ import sx.blah.discord.util.EmbedBuilder;
 public class TimeActivity implements Activity {
 
 	private static final ActivityDescriptor ACTIVITY_DESCRIPTOR = ActivityDescriptor.builder()
-			.route(ImmutableList.of("time"))
+			.route("time")
 			.parameters(ImmutableList.of("query"))
 			.description("Anything about time. Conversions, current time, etc.")
 			.build();

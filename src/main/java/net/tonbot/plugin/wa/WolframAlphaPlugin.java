@@ -35,7 +35,8 @@ public class WolframAlphaPlugin extends TonbotPlugin {
 		try {
 			Config config = objectMapper.readValue(configFile, Config.class);
 			this.injector = Guice.createInjector(
-					new WolframAlphaModule(args.getDiscordClient(), args.getPrefix(), args.getBotUtils(), config.getWolframAlphaAppId()));
+					new WolframAlphaModule(args.getDiscordClient(), args.getPrefix(), args.getBotUtils(),
+							config.getWolframAlphaAppId()));
 		} catch (IOException e) {
 			throw new RuntimeException("Could not read configuration file.", e);
 		}
@@ -48,7 +49,7 @@ public class WolframAlphaPlugin extends TonbotPlugin {
 
 	@Override
 	public String getActionDescription() {
-		return "Ask Wolfram Alpha";
+		return "Ask Me Questions (Powered by Wolfram Alpha)";
 	}
 
 	@Override

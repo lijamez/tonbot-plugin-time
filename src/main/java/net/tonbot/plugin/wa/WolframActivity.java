@@ -20,7 +20,6 @@ public class WolframActivity implements Activity {
 	private static final ActivityDescriptor ACTIVITY_DESCRIPTOR = ActivityDescriptor.builder()
 			.route("")
 			.parameters(ImmutableList.of("<question>"))
-			.description("Ask WolframAlpha about anything.")
 			.build();
 
 	private final IDiscordClient discordClient;

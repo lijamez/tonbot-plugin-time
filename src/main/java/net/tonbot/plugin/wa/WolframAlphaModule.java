@@ -23,7 +23,11 @@ class WolframAlphaModule extends AbstractModule {
 	private final BotUtils botUtils;
 	private final String wolframAlphaAppId;
 
-	public WolframAlphaModule(IDiscordClient discordClient, String prefix, BotUtils botUtils, String wolframAlphaAppId) {
+	public WolframAlphaModule(
+			IDiscordClient discordClient,
+			String prefix,
+			BotUtils botUtils,
+			String wolframAlphaAppId) {
 		this.discordClient = Preconditions.checkNotNull(discordClient, "discordClient must be non-null.");
 		this.prefix = Preconditions.checkNotNull(prefix, "prefix must be non-null.");
 		this.botUtils = Preconditions.checkNotNull(botUtils, "botUtils must be non-null.");

@@ -15,8 +15,8 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 public class WolframActivity implements Activity {
 
 	private static final ActivityDescriptor ACTIVITY_DESCRIPTOR = ActivityDescriptor.builder()
-			.route("w")
-			.parameters(ImmutableList.of("<a question>"))
+			.route("")
+			.parameters(ImmutableList.of("<question>"))
 			.description("Ask WolframAlpha about anything.")
 			.build();
 

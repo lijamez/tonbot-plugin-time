@@ -1,4 +1,4 @@
-package net.tonbot.plugin.time;
+package net.tonbot.plugin.wa;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

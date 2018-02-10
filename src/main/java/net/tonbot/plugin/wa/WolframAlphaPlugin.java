@@ -1,4 +1,4 @@
-package net.tonbot.plugin.time;
+package net.tonbot.plugin.wa;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,26 +15,27 @@ import net.tonbot.common.Activity;
 import net.tonbot.common.TonbotPlugin;
 import net.tonbot.common.TonbotPluginArgs;
 
-public class TimePlugin extends TonbotPlugin {
+public class WolframAlphaPlugin extends TonbotPlugin {
 
 	private Injector injector;
 
-	public TimePlugin(TonbotPluginArgs args) {
+	public WolframAlphaPlugin(TonbotPluginArgs args) {
 		super(args);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		File configFile = args.getConfigFile();
 		if (!configFile.exists()) {
-			//TODO: Create it.
+			// TODO: Create it.
 			throw new IllegalStateException("Config file doesn't exist.");
 		}
-		
+
 		Preconditions.checkNotNull(configFile, "configFile must be non-null.");
 
 		try {
 			Config config = objectMapper.readValue(configFile, Config.class);
-			this.injector = Guice.createInjector(new TimeModule(args.getPrefix(), args.getBotUtils(), config.getWolframAlphaAppId()));
+			this.injector = Guice.createInjector(
+					new WolframAlphaModule(args.getPrefix(), args.getBotUtils(), config.getWolframAlphaAppId()));
 		} catch (IOException e) {
 			throw new RuntimeException("Could not read configuration file.", e);
 		}
@@ -42,12 +43,12 @@ public class TimePlugin extends TonbotPlugin {
 
 	@Override
 	public String getFriendlyName() {
-		return "Time";
+		return "Wolfram Alpha";
 	}
 
 	@Override
 	public String getActionDescription() {
-		return "Tell Time";
+		return "Ask Wolfram Alpha";
 	}
 
 	@Override

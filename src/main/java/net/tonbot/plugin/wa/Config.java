@@ -1,4 +1,4 @@
-package net.tonbot.plugin.time;
+package net.tonbot.plugin.wa;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

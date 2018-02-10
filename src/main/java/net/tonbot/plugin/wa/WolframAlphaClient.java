@@ -32,7 +32,7 @@ class WolframAlphaClient {
 
 		try {
 			URI uri = new URIBuilder()
-					.setScheme("https")
+					.setScheme("https") 
 					.setHost("api.wolframalpha.com")
 					.setPath("/v1/result")
 					.setParameter("appid", appId)

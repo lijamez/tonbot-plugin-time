@@ -17,7 +17,7 @@ public class TimeActivity implements Activity {
 
 	private static final ActivityDescriptor ACTIVITY_DESCRIPTOR = ActivityDescriptor.builder()
 			.route("time")
-			.parameters(ImmutableList.of("query"))
+			.parameters(ImmutableList.of("<query>"))
 			.description("Anything about time. Conversions, current time, etc.")
 			.build();
 

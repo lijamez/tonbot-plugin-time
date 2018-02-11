@@ -11,6 +11,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.util.EntityUtils;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
@@ -52,8 +53,11 @@ class WolframAlphaClient {
 
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(response.getEntity().getContent(), writer, Charsets.UTF_8);
+			
+			EntityUtils.consumeQuietly(response.getEntity());
+			
 			return writer.toString();
-
+			
 		} catch (URISyntaxException e) {
 			throw new IllegalStateException("Unable to make Wolfram Alpha call.", e);
 		} catch (IOException e) {

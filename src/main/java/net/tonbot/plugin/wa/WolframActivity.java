@@ -5,15 +5,13 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
-import com.vdurmont.emoji.EmojiParser;
 
 import net.tonbot.common.Activity;
 import net.tonbot.common.ActivityDescriptor;
 import net.tonbot.common.ActivityUsageException;
 import net.tonbot.common.BotUtils;
-import sx.blah.discord.api.IDiscordClient;
+import net.tonbot.common.MessageNormalizer;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
-import sx.blah.discord.util.MessageTokenizer;
 
 public class WolframActivity implements Activity {
 
@@ -22,13 +20,11 @@ public class WolframActivity implements Activity {
 			.parameters(ImmutableList.of("<question>"))
 			.build();
 
-	private final IDiscordClient discordClient;
 	private final BotUtils botUtils;
 	private final WolframAlphaClient waClient;
 
 	@Inject
-	public WolframActivity(IDiscordClient discordClient, BotUtils botUtils, WolframAlphaClient waClient) {
-		this.discordClient = Preconditions.checkNotNull(discordClient, "discordClient must be non-null.");
+	public WolframActivity(BotUtils botUtils, WolframAlphaClient waClient) {
 		this.botUtils = Preconditions.checkNotNull(botUtils, "botUtils must be non-null.");
 		this.waClient = Preconditions.checkNotNull(waClient, "waClient must be non-null.");
 	}
@@ -45,7 +41,7 @@ public class WolframActivity implements Activity {
 			throw new ActivityUsageException("What do you want to ask?");
 		}
 
-		String normalizedQuery = normalize(args);
+		String normalizedQuery = MessageNormalizer.removeEmojis(args);
 
 		event.getChannel().setTypingStatus(true);
 
@@ -64,28 +60,5 @@ public class WolframActivity implements Activity {
 		}
 
 		botUtils.sendMessage(event.getChannel(), response);
-	}
-
-	private String normalize(String message) {
-
-		StringBuilder normalizedMessage = new StringBuilder();
-
-		// Remove all UTF-8 emojis
-		String emojilessMessage = EmojiParser.removeAllEmojis(message);
-
-		MessageTokenizer tokenizer = new MessageTokenizer(discordClient, emojilessMessage);
-
-		while (tokenizer.hasNextWord()) {
-			String nextWord = tokenizer.nextWord().getContent();
-
-			if (MessageTokenizer.CUSTOM_EMOJI_PATTERN.matcher(nextWord).matches()) {
-				// Custom emoji found. Ignore it.
-				continue;
-			}
-
-			normalizedMessage.append(nextWord).append(" ");
-		}
-
-		return normalizedMessage.toString();
 	}
 }

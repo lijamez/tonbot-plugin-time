@@ -3,7 +3,8 @@ package net.tonbot.plugin.wa;
 import java.util.Set;
 
 import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
@@ -44,7 +45,15 @@ class WolframAlphaModule extends AbstractModule {
 	@Provides
 	@Singleton
 	HttpClient httpClient() {
-		return HttpClients.createDefault();
+		RequestConfig requestConfig = RequestConfig.custom()
+				.setConnectTimeout(2000)
+				.setSocketTimeout(5000)
+				.setConnectionRequestTimeout(2000)
+				.build();
+
+		return HttpClientBuilder.create()
+				.setDefaultRequestConfig(requestConfig)
+				.build();
 	}
 
 	@Provides

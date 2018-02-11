@@ -49,7 +49,7 @@ public class WolframAlphaPlugin extends TonbotPlugin {
 
 	@Override
 	public String getActionDescription() {
-		return "Ask Me Questions (Powered by Wolfram Alpha)";
+		return "Answer Questions (with Wolfram Alpha)";
 	}
 
 	@Override

@@ -28,7 +28,18 @@ class WolframAlphaClient {
 		this.httpClient = Preconditions.checkNotNull(httpClient, "httpClient must be non-null.");
 	}
 
-	public String result(String input) {
+	/**
+	 * Calls Wolfram Alpha's Short Answers API.
+	 * https://products.wolframalpha.com/short-answers-api/documentation/
+	 * 
+	 * @param input
+	 *            The input. Non-null
+	 * @return Wolfram Alpha's answer.
+	 * @throw WolframAlphaApiException if a non-200 status code is returned. A
+	 *        status code of 501 indicates that Wolfram Alpha doesn't know how to
+	 *        handle the input.
+	 */
+	public String getShortAnswer(String input) {
 		Preconditions.checkNotNull(input, "input must be non-null.");
 
 		try {
@@ -40,6 +51,44 @@ class WolframAlphaClient {
 					.setParameter("i", input)
 					.build();
 
+			return get(uri);
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException("Unable to make Wolfram Alpha call.", e);
+		}
+	}
+
+	/**
+	 * Calls Wolfram Alpha's Spoken Results API.
+	 * https://products.wolframalpha.com/spoken-results-api/documentation/
+	 * 
+	 * @param input
+	 *            The input. Non-null
+	 * @return Wolfram Alpha's answer.
+	 * @throw WolframAlphaApiException if a non-200 status code is returned. A
+	 *        status code of 501 indicates that Wolfram Alpha doesn't know how to
+	 *        handle the input.
+	 */
+	public String getSpokenAnswer(String input) {
+		Preconditions.checkNotNull(input, "input must be non-null.");
+
+		try {
+			URI uri = new URIBuilder()
+					.setScheme("https")
+					.setHost("api.wolframalpha.com")
+					.setPath("/v1/spoken")
+					.setParameter("appid", appId)
+					.setParameter("i", input)
+					.build();
+
+			return get(uri);
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException("Unable to make Wolfram Alpha call.", e);
+		}
+	}
+
+	private String get(URI uri) {
+
+		try {
 			HttpGet httpGet = new HttpGet(uri);
 
 			CloseableHttpResponse response = httpClient.execute(httpGet);
@@ -61,9 +110,6 @@ class WolframAlphaClient {
 			} finally {
 				response.close();
 			}
-
-		} catch (URISyntaxException e) {
-			throw new IllegalStateException("Unable to make Wolfram Alpha call.", e);
 		} catch (IOException e) {
 			throw new UncheckedIOException("Failed to make Wolfram Alpha call.", e);
 		}

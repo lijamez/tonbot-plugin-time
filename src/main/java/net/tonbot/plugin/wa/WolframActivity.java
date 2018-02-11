@@ -48,7 +48,7 @@ public class WolframActivity implements Activity {
 		String response;
 
 		try {
-			response = waClient.result(normalizedQuery);
+			response = waClient.getSpokenAnswer(normalizedQuery);
 		} catch (WolframAlphaApiException e) {
 			if (e.getStatusCode() == 501) {
 				// Answer not known.

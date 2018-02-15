@@ -1,5 +1,7 @@
 package net.tonbot.plugin.wa;
 
+import javax.annotation.Nonnull;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,5 +13,6 @@ public class WolframRequest {
 
 	@Getter
 	@Param(name = "query", ordinal = 0, description = "A query", captureRemaining = true)
+	@Nonnull
 	private String query;
 }

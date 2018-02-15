@@ -10,6 +10,7 @@ import net.tonbot.common.Activity;
 import net.tonbot.common.ActivityDescriptor;
 import net.tonbot.common.ActivityUsageException;
 import net.tonbot.common.BotUtils;
+import net.tonbot.common.Enactable;
 import net.tonbot.common.MessageNormalizer;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
@@ -34,14 +35,14 @@ public class WolframActivity implements Activity {
 		return ACTIVITY_DESCRIPTOR;
 	}
 
-	@Override
-	public void enact(MessageReceivedEvent event, String args) {
+	@Enactable
+	public void enact(MessageReceivedEvent event, WolframRequest request) {
 
-		if (StringUtils.isBlank(args)) {
+		if (StringUtils.isBlank(request.getQuery())) {
 			throw new ActivityUsageException("What do you want to ask?");
 		}
 
-		String normalizedQuery = MessageNormalizer.removeEmojis(args);
+		String normalizedQuery = MessageNormalizer.removeEmojis(request.getQuery());
 
 		event.getChannel().setTypingStatus(true);
 
